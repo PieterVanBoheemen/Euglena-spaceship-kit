@@ -1,7 +1,7 @@
 # Biotic Games at Waag
 Repository for the Biotic Games project at Waag Society, by Christian Schulz & Roland van Dierendonck.
 
-Building instructions can be found at [bioticgamesatwaag.github.io](http://www.bioticgamesatwaag.github.io)
+Building instructions can be found at [bioticgamesatwaag.github.io](http://bioticgamesatwaag.github.io)
 
 Contains:
 * Arduino Code for Joystick
