@@ -1,5 +1,6 @@
 # Campus_Party
-Repository for the Biotic Games workshop at Campus Party, May 27 
+Repository for the Biotic Games project at Waag Society, by Christian Schulz & Roland van Dierendonck.
+A webpage with building instructions can be found at [bioticgamesatwaag.github.io](bioticgamesatwaag.github.io)
 
 Contains:
 * Arduino Code for Joystick
