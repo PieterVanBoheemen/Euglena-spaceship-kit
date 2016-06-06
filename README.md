@@ -1,4 +1,4 @@
-# Campus_Party
+# Biotic Games at Waag
 Repository for the Biotic Games project at Waag Society, by Christian Schulz & Roland van Dierendonck.
 A webpage with building instructions can be found at [bioticgamesatwaag.github.io](http://www.bioticgamesatwaag.github.io)
 
@@ -8,3 +8,6 @@ Contains:
 * Design files of the Biotic Gaming Device (SVGs and DXFs for laser cutting) 
 * Processing code for tracking + example game 
 
+Biotic Games at Waag appeared at:
+* Campus Party, May 27, 2016 in Utrecht [in cooperation with Ingmar-Riedel Kruse]
+* International Festival of Technology, June 3, 2016
