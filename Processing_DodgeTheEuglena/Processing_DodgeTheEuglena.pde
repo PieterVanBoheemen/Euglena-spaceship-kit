@@ -114,8 +114,8 @@ int bubbleHeight;
 int bubbleWidth;
 
 void setup() {
-  //size(500,500);
-  fullScreen(1);
+  size(500,500);
+  //fullScreen(1);
   
   // Player spawn position
   PlayerX = int(random(0, width));
@@ -336,6 +336,7 @@ void draw() {
        serial = port.readStringUntil(end);
      }
      if (serial != null) {  //if the string is not empty, print the following
+     
        println(serial);
        String[] a = split(serial, ',');  //a new array (called 'a') that stores values into separate cells (separated by commas specified in your Arduino program)
          
@@ -351,7 +352,7 @@ void draw() {
          UD1 = value;
        } else if (joystick.equals(UD2str) == true) {
          UD2 = value;
-       }       
+       }      
      }
       
      // Use the first 5 s to callibrate midpoints 
@@ -378,7 +379,7 @@ void draw() {
      boolean right = false;
      // We keep track of time to prevent moving to fast
      if(currentTime - stepTime > 50) {
-       if((UD1 > MIDUD1 + MIDerror)&&(PlayerY < height - diameter - height/10)){
+       /*if((UD1 > MIDUD1 + MIDerror)&&(PlayerY < height - diameter - height/10)){
          PlayerY = PlayerY + diameter;
          stepTime = currentTime;
          up = true;
@@ -397,7 +398,10 @@ void draw() {
          PlayerX = PlayerX - diameter;
          stepTime = currentTime;
          left = true;
-       }  
+       } */
+       
+       PlayerX = LR1+width/2;
+       PlayerY = UD1+height/2;
      }
     
      // Draw Player
