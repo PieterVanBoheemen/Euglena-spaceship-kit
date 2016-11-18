@@ -114,8 +114,8 @@ int bubbleHeight;
 int bubbleWidth;
 
 void setup() {
-  size(500,500);
-  //fullScreen(1);
+  //size(500,500);
+  fullScreen(1);
   
   // Player spawn position
   PlayerX = int(random(0, width));
@@ -365,12 +365,12 @@ void draw() {
      } 
       
      // Print values to console for debugging
-     if(debugMode) {
+     //if(debugMode) {
        println("LR1 = " + LR1 + ", UD1 = " + UD1 + ", LR2 = " + LR2 + ", UD2 = " + UD2 + ", MIDUD1 = " + MIDUD1 + ", MIDLR1 = " + MIDLR1);
-       println(PlayerX, PlayerY);
+       //println(PlayerX, PlayerY);
      //println(diameter, width - diameter, diameter, height- diameter);
      //println(height/stepSize);
-     }
+     //}
     
      // Move the spaceship within boundaries
      boolean up = false;
@@ -399,9 +399,10 @@ void draw() {
          stepTime = currentTime;
          left = true;
        } */
+     
        
-       PlayerX = LR1+width/2;
-       PlayerY = UD1+height/2;
+       PlayerX = LR1;
+       PlayerY = UD1;
      }
     
      // Draw Player
