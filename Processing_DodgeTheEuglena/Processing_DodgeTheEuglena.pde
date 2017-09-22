@@ -23,6 +23,7 @@ final int GAME = 2;
 final int PAUSE = 3;
 final int SERIAL_SETTINGS = 4;
 final int CAMERA_SETTINGS = 5;
+final int GAME_SETTINGS = 6;
 
 boolean statePause = false;
 int pauseFrames = 0;
@@ -105,7 +106,7 @@ boolean immortalTimeGame = false; // Immortal flag after respwan
 // Player position
 int PlayerX = 0; 
 int PlayerY = 0;  
-int diameter = 50; //size of the spaceship in diameters
+int diameter = 100; //size of the spaceship in diameters
 
 // Bubble variables are used for scoring the collision
 int bubbleX;
@@ -189,6 +190,7 @@ void draw() {
       text("[2] Game Info", width/2, height/2+50);
       text("[3] Serial Settings", width/2, height/2+100);
       text("[4] Camera Settings", width/2, height/2+150);
+      text("[5] Game Settings", width/2, height/2+200);
       
       imageMode(CENTER);
       image(WaagWetlabLogo, width/2, height-(height/5), 180, 54);
@@ -223,9 +225,10 @@ void draw() {
       text("Use keys [W], [A], [S] or [D] to guide the Euglena.", width/2, height/2+60);
       
       textFont(ASBoldItalic, textSizeMedium);
-      text("[1] Start Game", width/2, height/2+115);
-      text("[5] Back to Menu", width/2, height/2+145);
+      textAlign(LEFT, TOP);
+      text("[BACKSPACE] Back to Menu", 50, height-150);
       
+      textAlign(CENTER, TOP);
       textFont(ASMedium, textSizeSmall);
       text("This game has been developed by Waag Society", width/2, height/2+180);
       text("Special thanks to: Pieter van Boheemen, Roland van Dierendonck, Christian Schultz", width/2, height/2+200);
@@ -265,10 +268,11 @@ void draw() {
         text(serialPorts[i], width/2-100, height/2+(50*i));
       }
       
-      textAlign(CENTER);
       textFont(ASBoldItalic, textSizeMedium);
-      text("[1] Start Game", width/2, height-150);
-      text("[5] Back to Menu", width/2, height-120);
+      textAlign(LEFT, TOP);
+      text("[BACKSPACE] Back to Menu", 50, height-150);
+      
+      textAlign(CENTER, TOP);
       
     break;
     
@@ -300,10 +304,11 @@ void draw() {
         text(cameras[i], width/2-100, height/2+(20*i));
       }
       
-      textAlign(CENTER);
       textFont(ASBoldItalic, textSizeMedium);
-      text("[1] Start Game", width/2, height-150);
-      text("[5] Back to Menu", width/2, height-120);
+      textAlign(LEFT, TOP);
+      text("[BACKSPACE] Back to Menu", 50, height-150);
+      
+      textAlign(CENTER, TOP);
       
       break;
     
@@ -325,7 +330,8 @@ void draw() {
        fill(255,0,0);
        image(diff, 0, 0, width, height);
        textFont(ASExtraBoldItalic, textSizeSmall); 
-       text("Treshold "+DiffTreshold, width/2, height/2);
+       text("Difference Treshold "+DiffTreshold, width/2, height/2);
+       text("Blob Size Treshold "+pixelTreshold, width/2, height/2+50);
      }
      
      // MAKE ACTIVE AGAIN WHEN ARDUINO IS CONNECTED
@@ -401,8 +407,8 @@ void draw() {
        } */
      
        
-       PlayerX = LR1;
-       PlayerY = UD1;
+       PlayerX = int(float(LR1)/float(255)*width);
+       PlayerY = int(float(UD1)/float(255)*height);
      }
     
      // Draw Player
@@ -420,7 +426,7 @@ void draw() {
      // Render player as spaceship
      Spaceship.disableStyle();  // Ignore the colors in the SVG
      shapeMode(CENTER);
-     shape(Spaceship, PlayerX, PlayerY, 50, 100);
+     shape(Spaceship, PlayerX, PlayerY, 100, 200);
      // rotate according to direction
      if(up) {
        if(right) {
@@ -500,7 +506,7 @@ void draw() {
      }
      
       // Use white pixels for detection
-      // update bubble vars
+      // update spaceship vars
       bubbleX = int(float(PlayerX)/ width * 640);
       bubbleY = int(float(PlayerY)/ height * 480);
       bubbleHeight = int(float(diameter)/height * 480);
@@ -508,7 +514,7 @@ void draw() {
     
       movementAmount = 0;
       
-      //  For loop that cycles through all of the pixels in the area the bubble occupies
+      //  For loop that cycles through all of the pixels in the area the spaceship occupies
       for( int y = bubbleY; y < (bubbleY + (bubbleHeight-1)); y++ ){   
         for( int x = bubbleX; x < (bubbleX + (bubbleWidth-1)); x++ ){
           //  If the current pixel is within the screen bondaries
@@ -624,6 +630,17 @@ void keyPressed() {
     print("DiffTreshold = ");
     println(DiffTreshold);
   }
+  if(key == 'u'){
+    pixelTreshold++;
+    print("pixelTreshold = ");
+    println(pixelTreshold);
+  }
+  if(key == 'h'){
+    pixelTreshold--;
+    if(pixelTreshold < 0) pixelTreshold = 0;
+    print("pixelTreshold = ");
+    println(pixelTreshold);
+  }
   if(key == 'x'){ // Restart game
     Lives = 3;
     score = 0;
@@ -634,6 +651,9 @@ void keyPressed() {
   if(key == 'i') {
     if(debugMode) debugMode = false;
     else debugMode = true;
+  }
+  if(key == 'g') {
+    saveFrame();
   }
   if(key == '2') state = 1;
   if(key == '1') { 
@@ -659,14 +679,18 @@ void keyPressed() {
   }
   if(key == '3') state = 4;
   if(key == '4') state = 5;
-  if(key == '5') state = 0;
-  if(key == '+') {
-    selectedItem++;
-  }
-  if(key == '-') {
-    selectedItem--;
-    if(selectedItem < 0) {
-      selectedItem = 0;
+  if(key == '5') state = 6;
+  if(key == '6') state = 0;
+  if(key == BACKSPACE) state = 0;
+  if(key == CODED) {
+    if(keyCode == DOWN) {
+      selectedItem++;
+    }
+    if(keyCode == UP) {
+      selectedItem--;
+      if(selectedItem < 0) {
+        selectedItem = 0;
+      }
     }
   }
 }
